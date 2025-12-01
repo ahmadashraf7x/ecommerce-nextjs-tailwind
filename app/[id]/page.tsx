@@ -27,18 +27,6 @@ export default function ProductDetails() {
   const [product, setProduct]   = useState<Product | null>(null);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState("");
-  const [cartCount, setCartCount] = useState(0); // 🟣 عدّاد السلة
-
-  function updateCartCountFromStorage() {
-  const storedCart = localStorage.getItem("cart");
-  if (!storedCart) {
-    setCartCount(0);
-    return;
-  }
-  const cart: CartItem[] = JSON.parse(storedCart);
-  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-  setCartCount(totalQty);
-}
 
   useEffect(() => {
     async function fetchProduct() {
@@ -58,12 +46,8 @@ export default function ProductDetails() {
     }
 
     if (id) fetchProduct();
-
-    updateCartCountFromStorage();
-
   }, [id]);
 
-  
    const handleAddToCart= () =>{
     if (!product) return;
   const storedCart = localStorage.getItem("cart");
@@ -83,37 +67,28 @@ export default function ProductDetails() {
   }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-    setCartCount(totalQty);
+    window.dispatchEvent(new Event("cart-updated"));
+
     alert("Added to cart ✅");
    }
   if (loading) return <p>Loading...</p>;
   if (error)   return <p>{error}</p>;
   if (!product) return <p>Product not found</p>;
-
- 
-
   return (
     <div className="min-h-screen bg-gray-100">
         <div className="max-w-4xl mx-auto p-4 md:p-8"> 
-        <header className="flex items-center justify-between mb-6" > 
-        <Link className="text-sm md:text-base text-gray-600 hover:text-gray-800"
-  href="/">⬅ Back to products</Link>
-
-  <h1 className="text-xl md:text-2xl font-bold text-gray-800">Product Details</h1>
-      
-     <Link
-            href="/cart"
-            className="inline-flex items-center gap-2 text-sm md:text-base text-gray-700 hover:text-gray-900"
-          >
-            <span className="text-xl">🛒</span>
-            <span className="hidden sm:inline">Cart</span>
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-500 text-white text-xs font-semibold">
-              {cartCount}
-            </span>
-          </Link>
-          </header>
-      
+<header className="mb-6">
+  <Link 
+    className="text-sm md:text-base text-gray-600 hover:text-gray-800 flex items-center gap-1 mb-2"
+    href="/"
+  >
+    <span className="text-lg">⬅</span>
+    Back to products
+  </Link>
+  <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+    Product Details
+  </h1>
+</header>
       <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6 flex flex-col md:flex-row gap-6"> 
         <div className="flex-1 flex items-center justify-center"> 
       <img src={product.image} alt={product.title} width={200} />
@@ -127,7 +102,6 @@ export default function ProductDetails() {
  onClick={handleAddToCart}>Add to cart</button>
       </div>
 </div>
-     
     
     </div>
     </div>

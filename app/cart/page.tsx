@@ -13,12 +13,10 @@ type CartItem = {
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
  useEffect(() => {
-    // نقرأ الكارت من localStorage أول ما الصفحة تفتح
     const storedCart = localStorage.getItem("cart");
     const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
     setCartItems(cart);
   }, []);
-    // نحسب الـ Total
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
@@ -28,6 +26,8 @@ function handleRemove(id: number) {
     const newCart = cartItems.filter((item) => item.id !== id);
     setCartItems(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
+    window.dispatchEvent(new Event("cart-updated"));
+
   }
 
 
@@ -54,6 +54,8 @@ function handleRemove(id: number) {
 
     setCartItems(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
+    window.dispatchEvent(new Event("cart-updated"));
+
   }
 
   function handleDecrease(id: number) {
@@ -64,27 +66,45 @@ function handleRemove(id: number) {
         }
         return item;
       })
-      .filter((item) => item.qty > 0); // لو الكمية بقت 0 نشيله خالص
+      .filter((item) => item.qty > 0); 
 
     setCartItems(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
+    window.dispatchEvent(new Event("cart-updated"));
+
   }
 
   const handleClearCart =()=>{
-  setCartItems([]);          // فضّي الستايت
-  localStorage.removeItem("cart"); // امسح الكارت من اللوكال ستوريدج
+  setCartItems([]);          
+  localStorage.removeItem("cart"); 
+  window.dispatchEvent(new Event("cart-updated"));
+
   }
 
    return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-4xl mx-auto p-4 md:p-8">
 
-    <header className="flex items-center justify-between mb-6">
-      <h1 className="text-xl md:text-2xl font-bold text-gray-800">Your Cart</h1>
-      <Link className="text-sm md:text-base text-gray-600 hover:text-gray-800"
- href="/">⬅ Back to products</Link>
- <button className="text-xs md:text-sm text-red-600 hover:text-red-700 font-semibold" onClick={handleClearCart}> Empty cart
-</button>
+   <header className="flex items-center justify-between mb-6">
+  <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+    Your Cart
+  </h1>
+
+  <div className="flex items-center gap-4">
+    <Link
+      href="/"
+      className="text-sm md:text-base text-gray-600 hover:text-gray-800"
+    >
+      ⬅ Back to products
+    </Link>
+
+    <button
+      onClick={handleClearCart}
+      className="text-xs md:text-sm text-red-600 hover:text-red-700 font-semibold"
+    >
+      Empty cart
+    </button>
+  </div>
 </header>
 
   <div className="space-y-4"> 
@@ -124,8 +144,6 @@ function handleRemove(id: number) {
         </div>
       ))}
       </div>
-      
-      
       <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
 
         <p className="text-lg md:text-xl font-semibold text-gray-800">
