@@ -61,8 +61,10 @@ export default function RootLayout({
 
           </div>
         </header>
-        <main className="max-w-5xl mx-auto px-4">
+        <main className="min-h-screen">
+          <div className="max-w-5xl mx-auto p-4 md:p-8">
           {children}
+            </div>
         </main>
 
       </body>

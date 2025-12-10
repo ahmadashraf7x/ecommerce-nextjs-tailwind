@@ -75,8 +75,7 @@ export default function ProductDetails() {
   if (error)   return <p>{error}</p>;
   if (!product) return <p>Product not found</p>;
   return (
-    <div className="min-h-screen bg-gray-100">
-        <div className="max-w-4xl mx-auto p-4 md:p-8"> 
+    <> 
 <header className="mb-6">
   <Link 
     className="text-sm md:text-base text-gray-600 hover:text-gray-800 flex items-center gap-1 mb-2"
@@ -103,7 +102,6 @@ export default function ProductDetails() {
       </div>
 </div>
     
-    </div>
-    </div>
+   </>
   );
 }

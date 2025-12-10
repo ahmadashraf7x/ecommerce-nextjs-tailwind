@@ -54,16 +54,16 @@ Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic rout
 ## 📸 Screenshots
 
 ### 🏠 Home Page  
-![Home Page](./public/screenshots/home.jpg)
+![Home Page](./public/screenshots/home.png)
 
 ### 📦 Product Details  
-![Product Details](./public/screenshots/details.jpg)
+![Product Details](./public/screenshots/details.png)
 
 ### 🧺 Cart Page  
-![Cart Page](./public/screenshots/cart.jpg)
+![Cart Page](./public/screenshots/cart.png)
 
 ### ❌ Empty Cart  
-![Empty Cart](./public/screenshots/empty.jpg)
+![Empty Cart](./public/screenshots/empty.png)
 
 ---
 
@@ -74,12 +74,15 @@ git clone https://github.com/ahmadashraf7x/ecommerce-nextjs-tailwind.git
 cd ecommerce-nextjs-tailwind
 npm install
 npm run dev
+```
 
-🌍 Live Demo (Coming Soon)
-
+🌍 Live Demo 
+(Coming Soon)
 Will be deployed on Vercel.
 
-📌 Author
+---
 
-Ahmad Ashraf
+### 📌 Author
+**Ahmad Ashraf**
+
 Front-End Developer

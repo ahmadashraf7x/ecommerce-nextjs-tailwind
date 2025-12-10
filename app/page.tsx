@@ -54,9 +54,7 @@ const filteredProducts = products.filter((item) => {
   if (error)   return <p>{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100">
-
-    <div className="max-w-5xl mx-auto p-4 md:p-8" > 
+    <>
       <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Products</h1>
 
           <section className="flex flex-col md:flex-row gap-3 md:gap-4 mb-6">
@@ -95,7 +93,7 @@ value={category} onChange={(e) => setCategory(e.target.value)}>
       ))}
       </div>
       
-      </div>
-    </div>
+    </>
+    
   );
 }
