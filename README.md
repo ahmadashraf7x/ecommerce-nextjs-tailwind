@@ -2,6 +2,10 @@
 ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
+![REST API](https://img.shields.io/badge/API-REST-green)
+![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?logo=vercel)
+
+
 
 # 🛒 E-Store — Modern E-Commerce Frontend
 
@@ -42,7 +46,7 @@ Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic rout
 ---
 
 ## 🛠 Tech Stack
-- **Next.js v16.0.5**
+- **Next.js v16.0.7**
 - **React**
 - **TypeScript**
 - **Tailwind CSS**
@@ -77,8 +81,9 @@ npm run dev
 ```
 
 🌍 Live Demo 
-(Coming Soon)
-Will be deployed on Vercel.
+
+🚀 https://ecommerce-nextjs-tailwind-ecru.vercel.app
+
 
 ---
 
