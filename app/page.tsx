@@ -11,6 +11,40 @@ type Product = {
   category:string;
 };
 
+type ProductCardProps = {
+  product: Product;
+};
+
+function ProductCard({ product }: ProductCardProps) {
+  return (
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col items-center">
+      <h3 className="font-semibold text-sm md:text-base text-gray-800 mb-2 line-clamp-2 min-h-12">
+        {product.title}
+      </h3>
+
+      <p className="text-blue-600 font-bold mb-1">
+        Price: ${product.price}
+      </p>
+
+      <Link className="flex justify-center mb-3" href={`/${product.id}`}>
+        <img
+          className="h-32 object-contain"
+          src={product.image}
+          width="100"
+          alt={product.title}
+        />
+      </Link>
+
+      <Link
+        href={`/${product.id}`}
+        className="mt-auto text-sm text-blue-600 hover:underline"
+      >
+        View details
+      </Link>
+    </div>
+  );
+}
+
 
 export default function Products () {
 
@@ -72,24 +106,7 @@ value={category} onChange={(e) => setCategory(e.target.value)}>
          </section>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 ">
       {filteredProducts.map((item) => (
-        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-4 flex flex-col items-center"
- key={item.id}>
-
-          <h3 className="font-semibold text-sm md:text-base text-gray-800 mb-2 line-clamp-2 min-h-12" >{item.title}</h3>
-          <p className="text-blue-600 font-bold mb-1" >Price: ${item.price}</p>
-           <Link className="flex justify-center mb-3"  href={`/${item.id}`} >
-          <img  className="h-32 object-contain"
- src={item.image} width="100" alt={item.title} />
-          </Link>
-         <Link
-                href={`/${item.id}`}
-                className=" mt-auto text-sm text-blue-600 hover:underline"
-              >
-                View details
-              </Link>
-  
-        </div>
-
+        <ProductCard key={item.id} product={item} />
       ))}
       </div>
       
