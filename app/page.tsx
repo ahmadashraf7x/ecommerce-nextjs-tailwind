@@ -35,7 +35,7 @@ function ProductCard({ product }: ProductCardProps) {
         Price: ${product.price}
       </p>
 
-      <Link className="flex justify-center mb-3" href={`/${product.id}`}>
+      <Link className="flex justify-center mb-3" href={`/products/${product.id}`}>
         <img
           className="h-32 object-contain"
           src={product.image}
@@ -45,7 +45,7 @@ function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       <Link
-        href={`/${product.id}`}
+        href={`/products/${product.id}`}
         className="mt-auto text-sm text-blue-600 dark:text-blue-400 hover:underline"
       >
         View details
