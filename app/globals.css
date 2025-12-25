@@ -2,7 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@variant dark (&:where(.dark, .dark *));
 @layer utilities {
   .line-clamp-2 {
     overflow: hidden;

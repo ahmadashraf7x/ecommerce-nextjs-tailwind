@@ -24,31 +24,51 @@ function CartItemRow({
   onRemove,
 }: CartItemRowProps) {
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-300 pb-4 last:border-b-0 last:pb-0" key={item.id}>
+    <div className="
+  flex flex-col sm:flex-row items-center gap-4
+  border-b border-gray-300 dark:border-gray-700
+  pb-4 last:border-b-0 last:pb-0
+  transition-colors
+">
       <div className="w-20 h-20 flex items-center justify-center">
         <img className="max-h-20 object-contain" src={item.image} alt={item.title} width={80} />
       </div>
       <div className="flex-1 w-full">
-        <h3 className="text-sm md:text-base font-semibold text-gray-800">{item.title}</h3>
+        <h3 className="text-sm md:text-base font-semibold text-gray-800 dark:text-gray-100">
+          {item.title}</h3>
 
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600  dark:text-gray-300">
           Price:{" "}
-          <span className="font-semibold text-blue-600">
+          <span className="font-semibold text-blue-600 dark:text-blue-400">
             ${item.price}
           </span>
         </p>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
           Subtotal:{" "}
-          <span className="font-semibold text-gray-800">
+          <span className="font-semibold text-gray-800 dark:text-gray-100">
             ${(item.price * item.qty).toFixed(2)}
           </span>
         </p>
 
       </div>
       <div className="flex items-center gap-3" >
-        <button className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100" onClick={() => onDecrease(item.id)}>-</button>
+        <button className="
+    w-8 h-8 flex items-center justify-center
+    rounded-md border
+    border-gray-300 dark:border-gray-700
+    text-gray-700 dark:text-gray-200
+    hover:bg-gray-100 dark:hover:bg-gray-700
+    transition-colors
+  "   onClick={() => onDecrease(item.id)}>-</button>
         <span >Qty: {item.qty}</span>
-        <button className="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100" onClick={() => onIncrease(item.id)}>+</button>
+        <button className="
+    w-8 h-8 flex items-center justify-center
+    rounded-md border
+    border-gray-300 dark:border-gray-700
+    text-gray-700 dark:text-gray-200
+    hover:bg-gray-100 dark:hover:bg-gray-700
+    transition-colors
+  "  onClick={() => onIncrease(item.id)}>+</button>
         <button className="text-xs md:text-sm text-red-600 hover:text-red-700 font-semibold" onClick={() => onRemove(item.id)}>
           Remove
         </button>
@@ -83,10 +103,20 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 max-w-md w-full text-center" >
-          <h1 className="text-2xl font-bold text-gray-800 mb-3">Your Cart</h1>
-          <p className="text-gray-600 mb-4">Cart is empty</p>
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <div
+          className="
+    bg-white dark:bg-gray-800
+    rounded-2xl shadow-sm
+    border border-gray-200 dark:border-gray-700
+    p-6 md:p-8
+    max-w-md w-full text-center
+    transition-colors
+  "
+        >
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">
+            Your Cart</h1>
+          <p className="text-gray-600  dark:text-gray-300 mb-4">Cart is empty</p>
 
           <Link className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 text-sm md:text-base font-semibold hover:bg-blue-700 transition-colors" href="/">⬅ Back to products</Link>
 
@@ -135,14 +165,14 @@ export default function CartPage() {
     <>
 
       <header className="flex items-center justify-between mb-6">
-        <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
           Your Cart
         </h1>
 
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="text-sm md:text-base text-gray-600 hover:text-gray-800"
+            className="text-sm md:text-base text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
           >
             ⬅ Back to products
           </Link>
@@ -167,19 +197,32 @@ export default function CartPage() {
           />
         ))}
       </div>
-      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="
+  bg-white dark:bg-gray-800
+  rounded-2xl shadow-sm
+  border border-gray-200 dark:border-gray-700
+  p-4 md:p-6
+  flex flex-col md:flex-row items-center justify-between gap-4
+  transition-colors
+">
 
-        <p className="text-lg md:text-xl font-semibold text-gray-800">
+        <p className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100">
           Total:{" "}
-          <span className="text-blue-600">
+          <span className="text-blue-600 dark:text-blue-400">
             ${totalPrice.toFixed(2)}
           </span>
         </p>
         <div className="flex gap-3">
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-gray-300 text-gray-700 px-4 py-2 text-sm md:text-base hover:bg-gray-50"
-          >
+            className="
+    inline-flex items-center justify-center rounded-md
+    border border-gray-300 dark:border-gray-700
+    text-gray-700 dark:text-gray-200
+    px-4 py-2 text-sm md:text-base
+    hover:bg-gray-50 dark:hover:bg-gray-700
+    transition-colors
+  "          >
             ⬅ Continue shopping
           </Link>
 
