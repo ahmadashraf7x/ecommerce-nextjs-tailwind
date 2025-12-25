@@ -5,12 +5,12 @@
 ![REST API](https://img.shields.io/badge/API-REST-green)
 ![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?logo=vercel)
 
-
-
 # 🛒 E-Store — Modern E-Commerce Frontend
 
 A fully responsive e-commerce frontend built with **Next.js 16**, **React**, **TypeScript**, and **Tailwind CSS**.  
-Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic routing, full cart management, and persistent storage using `localStorage`.
+Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic routing, full cart management, persistent storage using `localStorage`, and **global dark / light mode support**.
+
+The project focuses on clean UI, scalable component structure, and understanding **Server vs Client rendering and hydration behavior** in Next.js.
 
 ---
 
@@ -24,7 +24,7 @@ Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic rout
 - Modern clean UI using **Tailwind CSS**
 
 ### 📄 Product Details
-- Dynamic routing using `/[id]`
+- Dynamic routing using `/products/[id]`
 - Product image, price, description & category
 - Add to cart button
 - Saved to cart inside localStorage
@@ -35,10 +35,15 @@ Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic rout
 - Remove individual items
 - Empty cart completely
 - Auto-calculated **subtotal & total**
-- Cart synced with navbar using a custom `cart-updated` event
+- Cart synced with Header using a custom `cart-updated` event
 - Cart data stored in **localStorage**
 
-### 🧭 Global Navbar (Layout)
+### 🌗 Dark / Light Mode
+- Global dark and light theme support
+- User preference persisted using `localStorage`
+- Smooth theme transitions using Tailwind CSS
+
+### 🧭 Global Header (Layout)
 - Shared across all pages (Next.js App Router)
 - Live cart counter updates instantly
 - Clean and reusable layout structure
@@ -46,19 +51,51 @@ Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic rout
 ---
 
 ## 🛠 Tech Stack
-- **Next.js v16.0.7**
+- **Next.js**
 - **React**
 - **TypeScript**
 - **Tailwind CSS**
 - **LocalStorage API**
 - **FakeStoreAPI**
 
+
+## 🧠 Technical Decisions & Learnings
+
+### 🔄 Server / Client Rendering & Hydration
+
+While implementing dark mode, a hydration mismatch occurred due to theme-based styles inside the global layout.
+
+To solve this:
+- The interactive Header was extracted into a dedicated **client-side component**
+- This avoided SSR hydration mismatches
+- Allowed safe styling changes (colors, borders, hover states)
+- Improved separation of concerns and overall architecture
+
+This process helped me better understand:
+- Server vs Client rendering in Next.js
+- How React hydration works
+- When to move logic to client-only components
+
+---
+
+## 🗂 Project Structure
+
+The project follows the Next.js App Router structure with a clear separation between pages and reusable UI components.
+
+- `app/` — Pages, routing, and layouts
+- `components/` — Reusable UI components (Header)
+- `public/` — Static assets and screenshots
+
+
 ---
 
 ## 📸 Screenshots
 
 ### 🏠 Home Page  
-![Home Page](./public/screenshots/home.png)
+![Home Page](./public/screenshots/home-light.png)
+
+### 🌗 Home Page (Dark Mode)  
+![Home Page Dark](./public/screenshots/home-dark.png)
 
 ### 📦 Product Details  
 ![Product Details](./public/screenshots/details.png)
@@ -80,7 +117,7 @@ npm install
 npm run dev
 ```
 
-🌍 Live Demo 
+## 🌍 Live Demo
 
 🚀 https://ecommerce-nextjs-tailwind-ecru.vercel.app
 
