@@ -76,16 +76,33 @@ This process helped me better understand:
 - How React hydration works
 - When to move logic to client-only components
 
+### 🛒 Cart Logic Separation & State Management
+
+To improve maintainability and avoid duplicated logic, cart-related behavior was extracted into a centralized utility module.
+
+This includes:
+- Adding items to cart
+- Increasing / decreasing quantities
+- Removing items
+- Clearing the cart
+- Synchronizing cart state with `localStorage`
+
+Benefits of this approach:
+- UI components remain focused on rendering and user interaction
+- Cart business rules are defined in a single place
+- Easier to scale or replace `localStorage` with an API in the future
+- Cleaner and more readable page components
+
+This refactor reflects real-world frontend architecture practices, even in a client-only application.
+
 ---
 
 ## 🗂 Project Structure
 
-The project follows the Next.js App Router structure with a clear separation between pages and reusable UI components.
-
 - `app/` — Pages, routing, and layouts
 - `components/` — Reusable UI components (Header)
+- `lib/` — Centralized cart logic and localStorage utilities
 - `public/` — Static assets and screenshots
-
 
 ---
 
