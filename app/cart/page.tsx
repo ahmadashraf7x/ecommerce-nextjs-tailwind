@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { clearCart, decreaseQty, getCart, increaseQty, removeFromCart } from "../lib/cart";
 
 type CartItem = {
   id: number;
@@ -83,9 +84,7 @@ function CartItemRow({
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    const cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
-    setCartItems(cart);
+    setCartItems(getCart());
   }, []);
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
@@ -93,11 +92,7 @@ export default function CartPage() {
   );
 
   function handleRemove(id: number) {
-    const newCart = cartItems.filter((item) => item.id !== id);
-    setCartItems(newCart);
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    window.dispatchEvent(new Event("cart-updated"));
-
+    setCartItems(removeFromCart(id));
   }
 
 
@@ -125,41 +120,19 @@ export default function CartPage() {
     );
   }
   function handleIncrease(id: number) {
-    const newCart = cartItems.map((item) => {
-      if (item.id === id) {
-        return { ...item, qty: item.qty + 1 };
-      }
-      return item;
-    });
-
-    setCartItems(newCart);
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    window.dispatchEvent(new Event("cart-updated"));
-
+    setCartItems(increaseQty(id));
   }
 
   function handleDecrease(id: number) {
-    const newCart = cartItems
-      .map((item) => {
-        if (item.id === id) {
-          return { ...item, qty: item.qty - 1 };
-        }
-        return item;
-      })
-      .filter((item) => item.qty > 0);
-
-    setCartItems(newCart);
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    window.dispatchEvent(new Event("cart-updated"));
-
+    setCartItems(decreaseQty(id));
   }
+
+
 
   const handleClearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem("cart");
-    window.dispatchEvent(new Event("cart-updated"));
-
+    setCartItems(clearCart);
   }
+
 
   return (
     <>
