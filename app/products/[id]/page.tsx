@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { addToCart } from "@/lib/cart";
 
 type Product = {
   id: number;
@@ -50,25 +51,7 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    const storedCart = localStorage.getItem("cart");
-    let cart: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
-    const existingItem = cart.find((item) => item.id === product.id);
-    if (existingItem) {
-      existingItem.qty += 1;
-    } else {
-      const newItem: CartItem = {
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        image: product.image,
-        qty: 1,
-      };
-      cart.push(newItem)
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    window.dispatchEvent(new Event("cart-updated"));
-
+    addToCart(product);
     alert("Added to cart ✅");
   }
   if (loading) return <p>Loading...</p>;
