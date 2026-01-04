@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { addToCart } from "@/lib/cart";
@@ -52,7 +53,7 @@ export default function ProductDetails() {
   const handleAddToCart = () => {
     if (!product) return;
     addToCart(product);
-    alert("Added to cart ✅");
+    toast.success("Added to cart");
   }
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
