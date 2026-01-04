@@ -130,9 +130,9 @@ export default function CartPage() {
 
 
   const handleClearCart = () => {
-    setCartItems(clearCart);
-  }
-
+  clearCart();
+  setCartItems([]);
+};
 
   return (
     <>
