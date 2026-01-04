@@ -1,6 +1,7 @@
-// app/layout.tsx
+"use client";
 import "./globals.css";
 import Header from "../components/Header";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -17,7 +18,9 @@ export default function RootLayout({
             {children}
           </div>
         </main>
+         <Toaster position="top-right" />
       </body>
+     
     </html>
   );
 }
