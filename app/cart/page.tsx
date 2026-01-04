@@ -82,10 +82,13 @@ function CartItemRow({
 
 
 export default function CartPage() {
+  const [mounted, setMounted] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   useEffect(() => {
+    setMounted(true);
     setCartItems(getCart());
   }, []);
+  if (!mounted) return null;
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
@@ -130,9 +133,9 @@ export default function CartPage() {
 
 
   const handleClearCart = () => {
-  clearCart();
-  setCartItems([]);
-};
+    clearCart();
+    setCartItems([]);
+  };
 
   return (
     <>
