@@ -26,14 +26,16 @@ export function addToCart(product: {
 
   const existing = cart.find(item => item.id === product.id);
 
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({ ...product, qty: 1 });
-  }
+  const newCart = existing
+    ? cart.map(item =>
+        item.id === product.id
+          ? { ...item, qty: item.qty + 1 }
+          : item
+      )
+    : [...cart, { ...product, qty: 1 }];
 
-  saveCart(cart);
-  return cart;
+  saveCart(newCart);
+  return newCart;
 }
 
 export function increaseQty(id: number) {
