@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import React from "react";
 
 
 type Product = {
@@ -15,7 +16,7 @@ type ProductCardProps = {
   product: Product;
 };
 
-function ProductCard({ product }: ProductCardProps) {
+const ProductCard = React.memo(function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="
   bg-white dark:bg-gray-800
@@ -52,7 +53,7 @@ function ProductCard({ product }: ProductCardProps) {
       </Link>
     </div>
   );
-}
+})
 
 
 export default function Products() {
