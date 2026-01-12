@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { clearCart, decreaseQty, getCart, increaseQty, removeFromCart } from "../lib/cart";
+import { clearCart, getCart, saveCart } from "../lib/cart";
+import React from "react";
 
 type CartItem = {
   id: number;
@@ -18,7 +19,7 @@ type CartItemRowProps = {
   onRemove: (id: number) => void;
 };
 
-function CartItemRow({
+const CartItemRow = React.memo(function CartItemRow({
   item,
   onIncrease,
   onDecrease,
@@ -78,7 +79,7 @@ function CartItemRow({
 
     </div>
   );
-}
+})
 
 
 export default function CartPage() {
@@ -94,9 +95,13 @@ export default function CartPage() {
     0
   );
 
-  function handleRemove(id: number) {
-    setCartItems(removeFromCart(id));
-  }
+  const handleRemove = useCallback((id: number) => {
+    setCartItems(prev => {
+      const updated = prev.filter(item => item.id !== id);
+      saveCart(updated);
+      return updated;
+    });
+  }, []);
 
 
   if (cartItems.length === 0) {
@@ -122,15 +127,31 @@ export default function CartPage() {
       </div>
     );
   }
-  function handleIncrease(id: number) {
-    setCartItems(increaseQty(id));
-  }
+  const handleIncrease = useCallback((id: number) => {
+    setCartItems(prev => {
+      const updated = prev.map(item =>
+        item.id === id
+          ? { ...item, qty: item.qty + 1 }
+          : item
+      );
+      saveCart(updated);
+      return updated;
+    });
+  }, []);
 
-  function handleDecrease(id: number) {
-    setCartItems(decreaseQty(id));
-  }
-
-
+  const handleDecrease = useCallback((id: number) => {
+    setCartItems(prev => {
+      const updated = prev
+        .map(item =>
+          item.id === id
+            ? { ...item, qty: item.qty - 1 }
+            : item
+        )
+        .filter(item => item.qty > 0);
+      saveCart(updated);
+      return updated;
+    });
+  }, []);
 
   const handleClearCart = () => {
     clearCart();
@@ -215,4 +236,9 @@ export default function CartPage() {
 
   );
 }
+
+
+
+
+
 

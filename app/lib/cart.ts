@@ -28,44 +28,14 @@ export function addToCart(product: {
 
   const newCart = existing
     ? cart.map(item =>
-        item.id === product.id
-          ? { ...item, qty: item.qty + 1 }
-          : item
-      )
+      item.id === product.id
+        ? { ...item, qty: item.qty + 1 }
+        : item
+    )
     : [...cart, { ...product, qty: 1 }];
 
   saveCart(newCart);
   return newCart;
-}
-
-export function increaseQty(id: number) {
-  const cart = getCart();
-
-  const updated = cart.map(item =>
-    item.id === id ? { ...item, qty: item.qty + 1 } : item
-  );
-
-  saveCart(updated);
-  return updated;
-}
-
-export function decreaseQty(id: number) {
-  const cart = getCart();
-
-  const updated = cart
-    .map(item =>
-      item.id === id ? { ...item, qty: item.qty - 1 } : item
-    )
-    .filter(item => item.qty > 0);
-
-  saveCart(updated);
-  return updated;
-}
-
-export function removeFromCart(id: number) {
-  const updated = getCart().filter(item => item.id !== id);
-  saveCart(updated);
-  return updated;
 }
 
 export function clearCart() {
