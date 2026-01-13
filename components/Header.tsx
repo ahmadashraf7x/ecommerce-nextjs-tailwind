@@ -1,17 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getCartCount } from "@/lib/cart";
+import { useCartStore } from "store/cartStore";
+
 
 
 export default function Header() {
-  const [cartCount, setCartCount] = useState(0);
-  const [darkMode, setDarkMode] = useState(false);
+const cartCount = useCartStore(state =>
+  state.items.reduce((sum, item) => sum + item.qty, 0)
+);  const [darkMode, setDarkMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  function updateCartCountFromStorage() {
-    setCartCount(getCartCount());
-  }
 
   function toggleDarkMode() {
     if (darkMode) {
@@ -26,20 +25,11 @@ export default function Header() {
 
   useEffect(() => {
     setMounted(true);
-
-    updateCartCountFromStorage();
-
-    window.addEventListener("cart-updated", updateCartCountFromStorage);
-
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme === "dark") {
       document.documentElement.classList.add("dark");
       setDarkMode(true);
     }
-
-    return () => {
-      window.removeEventListener("cart-updated", updateCartCountFromStorage);
-    };
   }, []);
 
   if (!mounted) return null;
