@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { addToCart } from "@/lib/cart";
+import { useCartStore } from "store/cartStore";
 
 type Product = {
   id: number;
@@ -15,17 +15,8 @@ type Product = {
   image: string;
 };
 
-type CartItem = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  qty: number;
-};
-
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,9 +41,12 @@ export default function ProductDetails() {
     if (id) fetchProduct();
   }, [id]);
 
+  const addItem = useCartStore(state => state.addItem);
+
+
   const handleAddToCart = () => {
     if (!product) return;
-    addToCart(product);
+      addItem(product);
     toast.success("Added to cart");
   }
   if (loading) return <p>Loading...</p>;
@@ -110,3 +104,4 @@ export default function ProductDetails() {
     </>
   );
 }
+

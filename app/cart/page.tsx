@@ -1,8 +1,8 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { clearCart, getCart, saveCart } from "../lib/cart";
 import React from "react";
+import { useCartStore } from "store/cartStore";
 
 type CartItem = {
   id: number;
@@ -83,28 +83,27 @@ const CartItemRow = React.memo(function CartItemRow({
 
 
 export default function CartPage() {
-  const [mounted, setMounted] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  
+const items = useCartStore(state => state.items);
+const increase = useCartStore(state => state.increase);
+const decrease = useCartStore(state => state.decrease);
+const remove = useCartStore(state => state.remove);
+const clear = useCartStore(state => state.clear);
+
+ const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
-    setCartItems(getCart());
   }, []);
+
   if (!mounted) return null;
-  const totalPrice = cartItems.reduce(
+
+  const totalPrice = items.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
   );
 
-  const handleRemove = useCallback((id: number) => {
-    setCartItems(prev => {
-      const updated = prev.filter(item => item.id !== id);
-      saveCart(updated);
-      return updated;
-    });
-  }, []);
-
-
-  if (cartItems.length === 0) {
+     if (items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
         <div
@@ -127,37 +126,7 @@ export default function CartPage() {
       </div>
     );
   }
-  const handleIncrease = useCallback((id: number) => {
-    setCartItems(prev => {
-      const updated = prev.map(item =>
-        item.id === id
-          ? { ...item, qty: item.qty + 1 }
-          : item
-      );
-      saveCart(updated);
-      return updated;
-    });
-  }, []);
-
-  const handleDecrease = useCallback((id: number) => {
-    setCartItems(prev => {
-      const updated = prev
-        .map(item =>
-          item.id === id
-            ? { ...item, qty: item.qty - 1 }
-            : item
-        )
-        .filter(item => item.qty > 0);
-      saveCart(updated);
-      return updated;
-    });
-  }, []);
-
-  const handleClearCart = () => {
-    clearCart();
-    setCartItems([]);
-  };
-
+   
   return (
     <>
 
@@ -175,7 +144,7 @@ export default function CartPage() {
           </Link>
 
           <button
-            onClick={handleClearCart}
+            onClick={clear}
             className="text-xs md:text-sm text-red-600 hover:text-red-700 font-semibold"
           >
             Empty cart
@@ -184,13 +153,13 @@ export default function CartPage() {
       </header>
 
       <div className="space-y-4">
-        {cartItems.map((item) => (
+        {items.map((item) => (
           <CartItemRow
             key={item.id}
             item={item}
-            onIncrease={handleIncrease}
-            onDecrease={handleDecrease}
-            onRemove={handleRemove}
+            onIncrease={increase}
+            onDecrease={decrease}
+            onRemove={remove}
           />
         ))}
       </div>
