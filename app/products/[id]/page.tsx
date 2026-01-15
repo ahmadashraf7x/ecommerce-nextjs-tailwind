@@ -7,6 +7,9 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/store-redux/cartSlice";
 import type { AppDispatch } from "@/store-redux";
+import LoadingState from "../../../components/ui/LoadingState";
+import ErrorState from "../../../components/ui/ErrorState";
+import EmptyState from "../../../components/ui/EmptyState";
 
 type Product = {
   id: number;
@@ -23,23 +26,36 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        setLoading(true);
-        setError("");
+  async function fetchProduct() {
+    try {
+      setLoading(true);
+      setError("");
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`);
-        const data = await res.json();
-        setProduct(data);
-      } catch (err) {
-        setError("Something went wrong");
-        console.log(err);
-      } finally {
-        setLoading(false);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`);
+      const text = await res.text();
+
+      if (!text) {
+        setProduct(null);
+        return;
       }
-    }
 
+      if (!res.ok) {
+        throw new Error("Failed to fetch");
+      }
+
+      const data = JSON.parse(text);
+      setProduct(data);
+
+    } catch (err) {
+      setError("Something went wrong");
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+  useEffect(() => {
     if (id) fetchProduct();
   }, [id]);
 
@@ -50,10 +66,15 @@ export default function ProductDetails() {
     dispatch(addItem(product));
     toast.success("Added to cart");
   }
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-  if (!product) return <p>Product not found</p>;
-  return (
+  if (loading) return <LoadingState />;
+  if (error) return <ErrorState message={error} onRetry={fetchProduct} />;
+
+  if (!product) return (
+    <EmptyState
+      title="Product not found"
+      description="This product does not exist"
+    />
+  ); return (
     <>
       <header className="mb-6">
         <Link className="

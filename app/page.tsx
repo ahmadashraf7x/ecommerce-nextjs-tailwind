@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import React from "react";
+import LoadingState from "../components/ui/LoadingState";
+import ErrorState from "../components/ui/ErrorState";
+import EmptyState from "../components/ui/EmptyState";
 
 
 type Product = {
@@ -64,25 +67,28 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products`);
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        setError("Something went wrong");
-        console.log(err);
-      } finally {
-        setLoading(false);
+  async function fetchProducts() {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch");
       }
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      setError("Something went wrong");
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchProducts();
-
   }, []);
+
   const filteredProducts = products.filter((item) => {
     const matchesTitle = item.title
       .toLowerCase()
@@ -94,8 +100,8 @@ export default function Products() {
     return matchesTitle && matchesCategory;
   });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <LoadingState />;
+  if (error) return <ErrorState message={error} onRetry={fetchProducts} />;
 
   return (
     <>
@@ -134,9 +140,18 @@ export default function Products() {
           value={search} />
       </section>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 ">
-        {filteredProducts.map((item) => (
-          <ProductCard key={item.id} product={item} />
-        ))}
+        {filteredProducts.length === 0 ? (
+          <div className="col-span-full">
+            <EmptyState
+              title="No products found"
+              description="Try changing search or category"
+            />
+          </div>
+        ) : (
+          filteredProducts.map((item) => (
+            <ProductCard key={item.id} product={item} />
+          ))
+        )}
       </div>
 
     </>
