@@ -29,7 +29,7 @@ export default function ProductDetails() {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`);
         const data = await res.json();
         setProduct(data);
       } catch (err) {
