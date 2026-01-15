@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useCartStore } from "store/cartStore";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/store-redux/cartSlice";
+import type { AppDispatch } from "@/store-redux";
 
 type Product = {
   id: number;
@@ -41,12 +43,11 @@ export default function ProductDetails() {
     if (id) fetchProduct();
   }, [id]);
 
-  const addItem = useCartStore(state => state.addItem);
-
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAddToCart = () => {
     if (!product) return;
-      addItem(product);
+    dispatch(addItem(product));
     toast.success("Added to cart");
   }
   if (loading) return <p>Loading...</p>;
