@@ -1,8 +1,10 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import React from "react";
-import { useCartStore } from "store/cartStore";
+import { useSelector, useDispatch } from "react-redux";
+import { increase, decrease, remove, clear } from "@/store-redux/cartSlice";
+import type { AppDispatch, RootState } from "@/store-redux";
 
 type CartItem = {
   id: number;
@@ -83,14 +85,11 @@ const CartItemRow = React.memo(function CartItemRow({
 
 
 export default function CartPage() {
-  
-const items = useCartStore(state => state.items);
-const increase = useCartStore(state => state.increase);
-const decrease = useCartStore(state => state.decrease);
-const remove = useCartStore(state => state.remove);
-const clear = useCartStore(state => state.clear);
+  const items = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useDispatch<AppDispatch>();
 
- const [mounted, setMounted] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -103,7 +102,7 @@ const clear = useCartStore(state => state.clear);
     0
   );
 
-     if (items.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
         <div
@@ -126,7 +125,7 @@ const clear = useCartStore(state => state.clear);
       </div>
     );
   }
-   
+
   return (
     <>
 
@@ -144,7 +143,7 @@ const clear = useCartStore(state => state.clear);
           </Link>
 
           <button
-            onClick={clear}
+            onClick={() => dispatch(clear())}
             className="text-xs md:text-sm text-red-600 hover:text-red-700 font-semibold"
           >
             Empty cart
@@ -157,9 +156,9 @@ const clear = useCartStore(state => state.clear);
           <CartItemRow
             key={item.id}
             item={item}
-            onIncrease={increase}
-            onDecrease={decrease}
-            onRemove={remove}
+            onIncrease={(id) => dispatch(increase(id))}
+            onDecrease={(id) => dispatch(decrease(id))}
+            onRemove={(id) => dispatch(remove(id))}
           />
         ))}
       </div>

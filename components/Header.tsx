@@ -1,14 +1,15 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useCartStore } from "store/cartStore";
+import React from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store-redux";
 
 
 
 export default function Header() {
-const cartCount = useCartStore(state =>
-  state.items.reduce((sum, item) => sum + item.qty, 0)
-);  const [darkMode, setDarkMode] = useState(false);
+  const cartCount = useSelector((state: RootState) => state.cart.items.reduce((sum, item) => sum + item.qty, 0));
+  const [darkMode, setDarkMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
 
