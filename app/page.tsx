@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useProducts } from "../hooks/useProducts";
 import Link from "next/link";
 import React from "react";
 import LoadingState from "../components/ui/LoadingState";
 import ErrorState from "../components/ui/ErrorState";
 import EmptyState from "../components/ui/EmptyState";
-import { getProducts } from "../services/products.service";
 import { Product } from "types/product";
 
 
@@ -54,36 +54,11 @@ const ProductCard = React.memo(function ProductCard({ product }: ProductCardProp
 
 
 export default function Products() {
-
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { products, loading, error, refetch } = useProducts();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
 
-  async function fetchProducts() {
-    try {
-      setLoading(true);
-      setError("");
-      // const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products`);
-      // if (!res.ok) {
-      //   throw new Error("Failed to fetch");
-      // }
 
-      // const data = await res.json();
-      const data = await getProducts();
-      setProducts(data);
-    } catch (err) {
-      setError("Something went wrong");
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   const filteredProducts = products.filter((item) => {
     const matchesTitle = item.title
@@ -97,7 +72,7 @@ export default function Products() {
   });
 
   if (loading) return <LoadingState />;
-  if (error) return <ErrorState message={error} onRetry={fetchProducts} />;
+  if (error) return <ErrorState message={error} onRetry={refetch} />;
 
   return (
     <>
