@@ -2,7 +2,7 @@
 import "./globals.css";
 import Header from "../components/Header";
 import { Toaster } from "react-hot-toast";
-import { persistor, store } from "./store-redux";
+import { persistor, store } from "../store-redux";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { increase, decrease, remove, clear } from "@/store-redux/cartSlice";
-import type { AppDispatch, RootState } from "@/store-redux";
+import { increase, decrease, remove, clear } from "store-redux/cartSlice";
+import type { AppDispatch, RootState } from "store-redux";
 
 type CartItem = {
   id: number;

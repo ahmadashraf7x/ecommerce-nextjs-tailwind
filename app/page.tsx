@@ -5,15 +5,9 @@ import React from "react";
 import LoadingState from "../components/ui/LoadingState";
 import ErrorState from "../components/ui/ErrorState";
 import EmptyState from "../components/ui/EmptyState";
+import { getProducts } from "../services/products.service";
+import { Product } from "types/product";
 
-
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  category: string;
-};
 
 type ProductCardProps = {
   product: Product;
@@ -71,11 +65,13 @@ export default function Products() {
     try {
       setLoading(true);
       setError("");
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch");
-      }
-      const data = await res.json();
+      // const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products`);
+      // if (!res.ok) {
+      //   throw new Error("Failed to fetch");
+      // }
+
+      // const data = await res.json();
+      const data = await getProducts();
       setProducts(data);
     } catch (err) {
       setError("Something went wrong");

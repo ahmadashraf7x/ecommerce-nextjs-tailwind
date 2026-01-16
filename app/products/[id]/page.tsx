@@ -5,20 +5,15 @@ import { toast } from "react-hot-toast";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { addItem } from "@/store-redux/cartSlice";
-import type { AppDispatch } from "@/store-redux";
+import { addItem } from "store-redux/cartSlice";
+import type { AppDispatch } from "store-redux";
 import LoadingState from "../../../components/ui/LoadingState";
 import ErrorState from "../../../components/ui/ErrorState";
 import EmptyState from "../../../components/ui/EmptyState";
+import { getProductById } from "../../../services/products.service";
+import { Product } from "types/product";
 
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-};
+
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -30,21 +25,9 @@ export default function ProductDetails() {
     try {
       setLoading(true);
       setError("");
-
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`);
-      const text = await res.text();
-
-      if (!text) {
-        setProduct(null);
-        return;
-      }
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch");
-      }
-
-      const data = JSON.parse(text);
-      setProduct(data);
+      
+    const data = await getProductById(id);
+    setProduct(data);
 
     } catch (err) {
       setError("Something went wrong");
