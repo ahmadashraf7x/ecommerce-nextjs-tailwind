@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useProduct } from "../../../hooks/useProductDetails";
 import { toast } from "react-hot-toast";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -17,30 +16,7 @@ import { Product } from "types/product";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  async function fetchProduct() {
-    try {
-      setLoading(true);
-      setError("");
-      
-    const data = await getProductById(id);
-    setProduct(data);
-
-    } catch (err) {
-      setError("Something went wrong");
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-
-  useEffect(() => {
-    if (id) fetchProduct();
-  }, [id]);
+  const { product, loading, error, refetch } = useProduct(id);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -50,7 +26,7 @@ export default function ProductDetails() {
     toast.success("Added to cart");
   }
   if (loading) return <LoadingState />;
-  if (error) return <ErrorState message={error} onRetry={fetchProduct} />;
+  if (error) return <ErrorState message={error} onRetry={refetch} />;
 
   if (!product) return (
     <EmptyState
