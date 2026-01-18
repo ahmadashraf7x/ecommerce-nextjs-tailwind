@@ -3,14 +3,25 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 ![REST API](https://img.shields.io/badge/API-REST-green)
+![Redux](https://img.shields.io/badge/Redux_Toolkit-764ABC?logo=redux&logoColor=white)
+![Jest](https://img.shields.io/badge/Tests-Jest-C21325?logo=jest&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?logo=vercel)
 
-# 🛒 E-Store — Modern E-Commerce Frontend
+# 🛒 E-Commerce Frontend — Next.js App Router
 
-A fully responsive e-commerce frontend built with **Next.js 16**, **React**, **TypeScript**, and **Tailwind CSS**.  
-Fetches products from **FakeStoreAPI**, supports search, filtering, dynamic routing, full cart management, persistent storage using `localStorage`, and **global dark / light mode support**.
+A **production-grade, fully responsive e-commerce frontend** built with **Next.js (App Router)**, **React**, **TypeScript**, **Redux Toolkit**, and **Tailwind CSS**.
 
-The project focuses on clean UI, scalable component structure, and understanding **Server vs Client rendering and hydration behavior** in Next.js.
+The application consumes products from **FakeStoreAPI** and demonstrates real-world frontend architecture patterns including:
+
+- Centralized state management using Redux Toolkit
+- Clean separation between UI, business logic, and data access layers
+- Scalable folder structure
+- Custom hooks for data fetching
+- Full shopping cart system
+- Dark / Light mode support
+- Unit & integration testing with Jest and React Testing Library
+
+This project is designed to reflect **real-world frontend engineering practices**, not just a demo UI.
 
 ---
 
@@ -21,88 +32,145 @@ The project focuses on clean UI, scalable component structure, and understanding
 - Responsive product grid layout
 - Search by product title
 - Category filtering
-- Modern clean UI using **Tailwind CSS**
+- Loading, error, and empty states
+- Clean UI built with **Tailwind CSS**
 
 ### 📄 Product Details
 - Dynamic routing using `/products/[id]`
 - Product image, price, description & category
-- Add to cart button
-- Saved to cart inside localStorage
+- Add to cart functionality
+- Data fetching isolated in a custom hook
 
-### 🛒 Shopping Cart
-- View all cart items
-- Increase / decrease item quantity
-- Remove individual items
-- Empty cart completely
-- Auto-calculated **subtotal & total**
-- Cart synced with Header using a custom `cart-updated` event
-- Cart data stored in **localStorage**
+### 🛒 Shopping Cart (Redux Toolkit)
+- Global cart state using Redux Toolkit (Single Source of Truth)
+- Add / remove items
+- Increase / decrease quantity
+- Clear entire cart
+- Auto-calculated subtotal & total
+- Cart indicator synced globally in the header
+- Persisted state using `localStorage`
 
 ### 🌗 Dark / Light Mode
-- Global dark and light theme support
-- User preference persisted using `localStorage`
-- Smooth theme transitions using Tailwind CSS
+- Global theme toggle
+- Persisted user preference using `localStorage`
+- Implemented safely to avoid Next.js hydration issues
+- Client-only interactive header to prevent SSR mismatch
 
-### 🧭 Global Header (Layout)
-- Shared across all pages (Next.js App Router)
-- Live cart counter updates instantly
-- Clean and reusable layout structure
+### 🧪 Testing
+- Unit tests for Redux cart slice
+- Integration tests for Cart page UI & interactions
+- Jest + React Testing Library setup
 
 ---
 
-## 🛠 Tech Stack
-- **Next.js**
-- **React**
-- **TypeScript**
-- **Tailwind CSS**
-- **LocalStorage API**
-- **FakeStoreAPI**
-
-
-## 🧠 Technical Decisions & Learnings
+## 🧠 Architecture & Technical Decisions
 
 ### 🔄 Server / Client Rendering & Hydration
 
-While implementing dark mode, a hydration mismatch occurred due to theme-based styles inside the global layout.
+During implementation of dark mode and global header state, a hydration mismatch issue appeared due to theme-dependent styles in the root layout.
 
 To solve this:
-- The interactive Header was extracted into a dedicated **client-side component**
+
+- The interactive `Header` was moved into a **client-only component**
 - This avoided SSR hydration mismatches
-- Allowed safe styling changes (colors, borders, hover states)
-- Improved separation of concerns and overall architecture
+- Allowed safe theme switching and cart state updates
+- Improved separation between server and client responsibilities
 
-This process helped me better understand:
-- Server vs Client rendering in Next.js
-- How React hydration works
-- When to move logic to client-only components
+This reflects a real-world understanding of:
 
-### 🛒 Cart Logic Separation & State Management
+- Next.js App Router rendering model
+- Server vs Client Components
+- React hydration behavior
 
-To improve maintainability and avoid duplicated logic, cart-related behavior was extracted into a centralized utility module.
+---
 
-This includes:
-- Adding items to cart
-- Increasing / decreasing quantities
-- Removing items
-- Clearing the cart
-- Synchronizing cart state with `localStorage`
+### 🧱 State Management & Business Logic Separation
 
-Benefits of this approach:
-- UI components remain focused on rendering and user interaction
-- Cart business rules are defined in a single place
-- Easier to scale or replace `localStorage` with an API in the future
-- Cleaner and more readable page components
+All cart business logic is centralized inside:
 
-This refactor reflects real-world frontend architecture practices, even in a client-only application.
+```txt
+/store-redux
+├── cartSlice.ts
+├── cartSlice.test.ts
+└── index.ts
+```
+
+Benefits:
+- UI components stay focused on rendering
+- Business rules live in one place
+- Predictable state updates
+- Easier testing and scaling
+- Ready to replace localStorage with a backend API in the future
+
+---
+
+### 🌐 Data Access Layer
+
+All API communication is isolated in:
+```
+/services
+└── products.service.ts
+```
+
+And consumed through:
+```
+/hooks
+├── useProducts.ts
+└── useProductDetails.ts
+```
+
+This provides:
+- Clean separation of concerns
+- Reusable and testable data logic
+- Cleaner page components
+
 
 ---
 
 ## 🗂 Project Structure
+```
+app/
+├── page.tsx
+├── layout.tsx
+├── cart/
+└── products/[id]/
 
-- `app/` — Pages, routing, and layouts
-- `components/` — Reusable UI components (Header)
-- `lib/` — Centralized cart logic and localStorage utilities
-- `public/` — Static assets and screenshots
+components/
+├── Header.tsx
+└── ui/
+├── LoadingState.tsx
+├── ErrorState.tsx
+└── EmptyState.tsx
+
+hooks/
+├── useProducts.ts
+└── useProductDetails.ts
+
+services/
+└── products.service.ts
+
+store-redux/
+├── cartSlice.ts
+├── cartSlice.test.ts
+└── index.ts
+
+types/
+└── product.ts
+```
+
+---
+
+## 🛠 Tech Stack
+
+- **Next.js (App Router)**
+- **React**
+- **TypeScript**
+- **Redux Toolkit**
+- **Tailwind CSS**
+- **Jest & React Testing Library**
+- **FakeStoreAPI**
+- **Vercel**
+
 
 ---
 
