@@ -18,9 +18,6 @@ function mapDummyProductToProduct(p: any): Product {
 export async function getProducts(): Promise<Product[]> {
   const res = await fetch(`${BASE_URL}/products`, { next: { revalidate: 60 } });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
-  }
 
   const data = await res.json();
 
