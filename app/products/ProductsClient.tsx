@@ -4,7 +4,13 @@ import EmptyState from "../../components/ui/EmptyState";
 import ProductCard from "./ProductCard";
 import { Product } from "types/product";
 
-export default function ProductsClient({ products }: { products: Product[] }){
+export default function ProductsClient({
+  products,
+  categories,
+}: {
+  products: Product[];
+  categories: { slug: string; name: string }[];
+}){
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
 
@@ -38,11 +44,13 @@ export default function ProductsClient({ products }: { products: Product[] }){
     transition-colors
   "          value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="all">All</option>
-          <option value="men's clothing">Men's</option>
-          <option value="women's clothing">Women</option>
-          <option value="electronics">Electronics</option>
-          <option value="jewelery">Jewelery</option>
-        </select>
+
+  {categories.map((cat) => (
+    <option key={cat.slug} value={cat.slug}>
+      {cat.name}
+    </option>
+  ))}
+</select>
         <input
           className="
     flex-1
