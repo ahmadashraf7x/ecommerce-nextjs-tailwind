@@ -2,6 +2,21 @@ import { Product } from "../types/product";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+if (!BASE_URL) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
+}
+
+function mapDummyProductToProduct(p: any): Product {
+  return {
+    id: p.id,
+    title: p.title,
+    description: p.description,
+    price: p.price,
+    category: p.category,
+    image: p.thumbnail,
+  };
+}
+
 export async function getProducts(): Promise<Product[]> {
   const res = await fetch(`${BASE_URL}/products`, { cache: "no-store" });
 
@@ -9,7 +24,10 @@ export async function getProducts(): Promise<Product[]> {
     throw new Error("Failed to fetch products");
   }
 
-  return res.json();
+  const data = await res.json();
+
+
+  return data.products.map(mapDummyProductToProduct);
 }
 
 export async function getProductById(id: number): Promise<Product | null> {
@@ -20,15 +38,29 @@ export async function getProductById(id: number): Promise<Product | null> {
   }
 
   if (!res.ok) {
-    throw new Error("API error");
+    throw new Error("Failed to fetch product");
   }
 
-  const text = await res.text();
+  const data = await res.json();
 
-  // API غبي: رجّع 200 بس body فاضي
-  if (!text || text === "null" || text === "{}") {
+  if (!data || !data.id) {
     return null;
   }
 
-  return JSON.parse(text);
+  return mapDummyProductToProduct(data);
+}
+
+export async function getCategories(): Promise<{ slug: string; name: string }[]> {
+  const res = await fetch(`${BASE_URL}/products/categories`, { cache: "no-store" });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  const data: { slug: string; name: string; url: string }[] = await res.json();
+
+  return data.map((cat) => ({
+    slug: cat.slug,
+    name: cat.name,
+  }));
 }
