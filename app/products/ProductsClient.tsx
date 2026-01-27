@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useProducts } from "../../hooks/useProducts";
 import EmptyState from "../../components/ui/EmptyState";
 import ProductCard from "./ProductCard";
 import { Product } from "types/product";
