@@ -6,11 +6,18 @@ import ProductDetailsClient from "./ProductDetailsClient";
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const product = await getProductById(Number(id));
 
-   if (!product) {
+  const numericId = Number(id);
+
+  if (Number.isNaN(numericId)) {
     notFound();
   }
 
-  return <ProductDetailsClient product={product} />;
+  const product = await getProductById(numericId);
+  if (!product) {
+    notFound();
+  }
+
+  return <ProductDetailsClient product={product} />
+
 }

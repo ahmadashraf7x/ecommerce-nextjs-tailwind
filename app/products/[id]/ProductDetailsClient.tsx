@@ -9,22 +9,16 @@ import { Product } from "types/product";
 
 
 
-export default function ProductDetailsClient({ product }: { product: Product | null })  {
+export default function ProductDetailsClient({ product }: { product: Product }) {
 
   const dispatch = useDispatch<AppDispatch>();
 
   const handleAddToCart = () => {
-    if (!product) return;
     dispatch(addItem(product));
     toast.success("Added to cart");
   }
 
-  if (!product) return (
-    <EmptyState
-      title="Product not found"
-      description="This product does not exist"
-    />
-  ); return (
+  return (
     <>
       <header className="mb-6">
         <Link className="

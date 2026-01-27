@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { getProductById } from "../services/products.service";
 import { Product } from "../types/product";
 
-export function useProduct(id: string | undefined) {
+export function useProduct(id: number) {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
