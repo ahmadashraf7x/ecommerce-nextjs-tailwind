@@ -1,10 +1,8 @@
 import { Product } from "../types/product";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+// const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-if (!BASE_URL) {
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
-}
+const BASE_URL = "https://dummyjson.com";
 
 function mapDummyProductToProduct(p: any): Product {
   return {
