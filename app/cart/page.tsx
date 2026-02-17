@@ -111,12 +111,13 @@ export default function CartPage() {
             ⬅ Continue shopping
           </Link>
 
-          <button
-            className="inline-flex items-center justify-center rounded-md bg-green-600 text-white px-4 py-2 text-sm md:text-base font-semibold hover:bg-green-700 transition-colors cursor-not-allowed"
-            disabled
-          >
-            Checkout
-          </button>
+         <Link
+  href="/checkout"
+  className="inline-flex items-center justify-center rounded-md bg-green-600 text-white px-4 py-2 text-sm md:text-base font-semibold hover:bg-green-700 transition-colors"
+>
+  Checkout
+</Link>
+
         </div>
 
       </div>
