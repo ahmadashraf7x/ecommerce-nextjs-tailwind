@@ -1,17 +1,18 @@
 "use client";
 
+import { useSelector } from "react-redux";
 import ProtectedRoute from "components/auth/ProtectedRoute";
+import type { RootState } from "store-redux";
 
 export default function CheckoutPage() {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <ProtectedRoute>
-      {(user) => (
-        
-        <div>
-          <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-          <p>Welcome {user.name}, complete your order.</p>
-        </div>
-      )}
+      <div>
+        <h1>Checkout</h1>
+        {user && <p>Welcome {user.name}</p>}
+      </div>
     </ProtectedRoute>
   );
 }

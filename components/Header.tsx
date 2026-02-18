@@ -78,9 +78,11 @@ const user = useSelector((state: RootState) => state.auth.user);
   </Link>
 ) : (
   <div className="flex items-center gap-2">
-    <span className="text-sm md:text-base">
-      Hi, {user.name}
-    </span>
+      <Link href="/profile">
+  Hi {user.name}
+</Link>
+
+   
     <button
       onClick={() => dispatch(logout())}
       className="text-sm text-red-600 hover:text-red-700 font-medium"

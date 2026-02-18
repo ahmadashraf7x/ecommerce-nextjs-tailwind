@@ -18,6 +18,8 @@ export default function AuthPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
 
   const [error, setError] = useState("");
 
@@ -46,6 +48,11 @@ export default function AuthPage() {
         setError("Email already exists");
         return;
       }
+
+      if (password !== confirmPassword) {
+  setError("Passwords do not match");
+  return;
+}
 
       const newUser: StoredUser = { name, email, password };
 
@@ -125,6 +132,18 @@ export default function AuthPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
+        {mode === "signup" && (
+  <input
+    type="password"
+    placeholder="Confirm Password"
+    className="w-full border px-3 py-2 rounded"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    required
+  />
+)}
+
 
         {error && (
           <p className="text-red-600 text-sm">{error}</p>

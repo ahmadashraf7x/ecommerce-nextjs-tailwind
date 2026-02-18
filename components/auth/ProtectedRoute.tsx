@@ -1,12 +1,10 @@
-"use client";
-
 import { useSelector } from "react-redux";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
-import type { RootState } from "store-redux";
+ import { useRouter, usePathname } from "next/navigation";
+  import { useEffect } from "react"; 
+  import type { RootState } from "store-redux";
 
 type Props = {
-  children: (user: NonNullable<RootState["auth"]["user"]>) => React.ReactNode;
+  children: React.ReactNode;
 };
 
 export default function ProtectedRoute({ children }: Props) {
@@ -22,5 +20,5 @@ export default function ProtectedRoute({ children }: Props) {
 
   if (!user) return null;
 
-  return <>{children(user)}</>;
+  return <>{children}</>;
 }
