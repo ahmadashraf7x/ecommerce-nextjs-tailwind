@@ -12,6 +12,7 @@ import { validateOrderForm } from "utils/checkout/orderValidation";
 import { useEffect, useState } from "react";
 import { submitOrder } from "services/order.service";
 import { useRouter } from "next/navigation";
+import { Order } from "types/order";
 
 
 
@@ -47,7 +48,6 @@ export default function OrderSummary() {
   }, [paymentMethod, acceptedTerms, shippingInfo, cardData, bankData]);
 
   const handlePlaceOrder = async () => {
-
     setError(null);
 
     dispatch(setSubmitAttempted(true));
@@ -69,27 +69,44 @@ export default function OrderSummary() {
       setError("You must be logged in");
       return;
     }
+
     setSubmitting(true);
+
     try {
       const data = await submitOrder({
         shippingInfo,
         paymentMethod,
       });
 
-      console.log("ORDER SUBMITTED", data);
+      const newOrder: Order = {
+        id: data.orderId,
+        userEmail: user.email,
+        items,
+        totalPrice,
+        shippingInfo,
+        paymentMethod,
+        createdAt: new Date().toISOString(),
+      };
+
+      const existingOrders = JSON.parse(
+        localStorage.getItem("orders") || "[]"
+      );
+
+      localStorage.setItem(
+        "orders",
+        JSON.stringify([...existingOrders, newOrder])
+      );
 
       dispatch(clear());
       dispatch(resetCheckout());
 
       router.push(`/order-success?orderId=${data.orderId}`);
 
-
     } catch {
       setError("Failed to submit order");
     } finally {
       setSubmitting(false);
     }
-
   };
 
   if (items.length === 0) {
@@ -104,7 +121,6 @@ export default function OrderSummary() {
     <aside className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4 text-gray-900 dark:text-gray-100">
       <h2 className="text-xl font-semibold">Order Summary</h2>
 
-      {/* 🛒 Items */}
       <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
         {items.map((item) => (
           <div key={item.id} className="flex justify-between">

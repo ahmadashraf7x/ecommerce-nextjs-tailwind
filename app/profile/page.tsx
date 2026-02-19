@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ProtectedRoute from "components/auth/ProtectedRoute";
 import { login, logout } from "store-redux/authSlice";
 import type { RootState, AppDispatch } from "store-redux";
+import Link from "next/link";
 
 type StoredUser = {
   name: string;
@@ -91,6 +92,13 @@ export default function ProfilePage() {
               >
                 Edit Profile
               </button>
+
+              <Link
+                href="/orders"
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-center"
+              >
+                My Orders
+              </Link>
 
               <button
                 onClick={() => dispatch(logout())}
