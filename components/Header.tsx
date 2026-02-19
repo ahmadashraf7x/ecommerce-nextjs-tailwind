@@ -2,13 +2,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import React from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "store-redux";
+import { useSelector , useDispatch } from "react-redux";
+import type { RootState , AppDispatch } from "store-redux";
+import { logout } from "store-redux/authSlice";
+
 
 
 
 export default function Header() {
   const cartCount = useSelector((state: RootState) => state.cart.items.reduce((sum, item) => sum + item.qty, 0));
+  const dispatch = useDispatch<AppDispatch>();
+const user = useSelector((state: RootState) => state.auth.user);
+
   const [darkMode, setDarkMode] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -63,6 +68,30 @@ export default function Header() {
     `}
             />
           </button>
+
+          {!user ? (
+  <Link
+    href="/auth"
+    className="text-sm md:text-base text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white font-medium"
+  >
+    Login
+  </Link>
+) : (
+  <div className="flex items-center gap-2">
+      <Link href="/profile">
+  Hi {user.name}
+</Link>
+
+   
+    <button
+      onClick={() => dispatch(logout())}
+      className="text-sm text-red-600 hover:text-red-700 font-medium"
+    >
+      Logout
+    </button>
+  </div>
+)}
+
 
           <Link
             href="/cart"
