@@ -11,17 +11,19 @@
 
 A **production-grade, fully responsive e-commerce frontend** built with **Next.js (App Router)**, **React**, **TypeScript**, **Redux Toolkit**, and **Tailwind CSS**.
 
-The application consumes products from **FakeStoreAPI** and demonstrates real-world frontend architecture patterns including:
+The application consumes products from **FakeStoreAPI** and implements a complete real-world e-commerce flow including:
 
+- Authentication system (Sign up / Sign in / Profile)
+- Protected routes
+- Fully validated checkout system
+- API Route simulation
+- Persistent order history per user
 - Centralized state management using Redux Toolkit
-- Clean separation between UI, business logic, and data access layers
-- Scalable folder structure
-- Custom hooks for data fetching
-- Full shopping cart system
+- Clean architecture with separation of concerns
 - Dark / Light mode support
-- Unit & integration testing with Jest and React Testing Library
+- Unit & integration testing
 
-This project is designed to reflect **real-world frontend engineering practices**, not just a demo UI.
+This project reflects real-world frontend architecture patterns and production-level engineering practices.
 
 ---
 
@@ -40,6 +42,28 @@ This project is designed to reflect **real-world frontend engineering practices*
 - Product image, price, description & category
 - Add to cart functionality
 - Data fetching isolated in a custom hook
+
+### 🔐 Authentication System
+- Client-side authentication simulation
+- Sign up & Sign in forms with validation
+- Confirm password validation
+- Editable profile page
+- Protected routes using a custom `<ProtectedRoute />` component
+- Global auth state managed with Redux Toolkit
+
+### 💳 Checkout System
+- Shipping form with field-level validation
+- Payment method selection (Card / Bank Transfer)
+- Modular validation architecture
+- Centralized order validation before submission
+- Terms & Conditions acceptance requirement
+- API Route simulation using Next.js App Router
+
+### 📦 Order History
+- Orders persisted in `localStorage`
+- User-based order filtering
+- Dedicated “My Orders” page
+- Dynamic success page with generated order ID
 
 ### 🛒 Shopping Cart (Redux Toolkit)
 - Global cart state using Redux Toolkit (Single Source of Truth)
@@ -102,6 +126,30 @@ Benefits:
 - Easier testing and scaling
 - Ready to replace localStorage with a backend API in the future
 
+### 🛍 Checkout & Order Flow Architecture
+
+Checkout flow is modularized into:
+
+```txt
+/components/checkout  
+├── ShippingForm.tsx  
+├── PaymentMethod.tsx  
+└── OrderSummary.tsx  
+```
+
+Validation logic is separated inside:
+
+```txt
+/utils/checkout  
+├── shippingValidation.ts  
+├── paymentValidation.ts  
+└── orderValidation.ts
+```
+
+Orders are persisted per user using localStorage and filtered dynamically inside the Orders page.
+
+This structure allows easy migration to a real backend in the future.
+
 ---
 
 ### 🌐 Data Access Layer
@@ -130,32 +178,85 @@ This provides:
 ## 🗂 Project Structure
 ```
 app/
-├── page.tsx
-├── layout.tsx
+├── api/
+│   └── order/
+│       └── route.ts                    # Order API simulation
+│
+├── auth/
+│   └── page.tsx
+│
 ├── cart/
-└── products/[id]/
+│   ├── CartItemRow.tsx
+│   ├── CartPage.test.tsx
+│   └── page.tsx
+│
+├── checkout/
+│   └── page.tsx
+│
+├── order-success/
+│   └── page.tsx
+│
+├── orders/
+│   └── page.tsx
+│
+├── products/
+│   ├── page.tsx                        # Products listing (Server Component)
+│   ├── ProductsClient.tsx
+│   ├── ProductCard.tsx
+│   ├── loading.tsx                     # Route-level loading boundary
+│   ├── error.tsx                       # Route-level error boundary
+│   └── [id]/
+│       ├── page.tsx                    # Dynamic product details
+│       ├── ProductDetailsClient.tsx
+│       └── not-found.tsx               # 404 handling
+│
+├── profile/
+│   └── page.tsx
+│
+├── layout.tsx
+├── page.tsx
+├── globals.css
+└── favicon.ico
+
 
 components/
 ├── Header.tsx
+├── auth/
+│   └── ProtectedRoute.tsx
+├── checkout/
+│   ├── ShippingForm.tsx
+│   ├── PaymentMethod.tsx
+│   └── OrderSummary.tsx
 └── ui/
-├── LoadingState.tsx
-├── ErrorState.tsx
-└── EmptyState.tsx
+    ├── EmptyState.tsx
+    └── ErrorState.tsx
 
-hooks/
-├── useProducts.ts
-└── useProductDetails.ts
 
 services/
-└── products.service.ts
+├── products.service.ts
+└── order.service.ts
+
 
 store-redux/
+├── authSlice.ts
 ├── cartSlice.ts
 ├── cartSlice.test.ts
+├── checkoutSlice.ts
 └── index.ts
 
+
 types/
-└── product.ts
+├── product.ts
+├── cart-item.ts
+└── order.ts
+
+
+utils/
+└── checkout/
+    ├── shippingValidation.ts
+    ├── paymentValidation.ts
+    └── orderValidation.ts
+
 ```
 
 ---
