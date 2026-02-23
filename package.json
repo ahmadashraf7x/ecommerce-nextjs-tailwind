@@ -15,7 +15,10 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hot-toast": "^2.6.0",
+    "react-phone-number-input": "^3.4.16",
     "react-redux": "^9.2.0",
+    "react-select": "^5.10.2",
+    "react-select-country-list": "^2.2.3",
     "redux-persist": "^6.0.0",
     "zustand": "^5.0.10"
   },

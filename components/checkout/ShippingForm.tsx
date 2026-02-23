@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "store-redux";
 import { setShippingInfo } from "store-redux/checkoutSlice";
 import { validateShippingInfo } from "utils/checkout/shippingValidation";
+import CountrySelect from "./CountrySelect";
+import PhoneInputField from "./PhoneInputField";
 
 export default function ShippingForm() {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,26 +74,37 @@ export default function ShippingForm() {
         </p>
       )}
 
-      <input
-        type="text"
-        placeholder="Phone"
+      <PhoneInputField
         value={shippingInfo.phone}
-        onChange={(e) => handleChange("phone", e.target.value)}
-        className={inputClasses}
+        defaultCountry="EG"
+        onChange={(phone) =>
+          dispatch(
+            setShippingInfo({
+              ...shippingInfo,
+              phone,
+            })
+          )
+        }
       />
+
       {submitAttempted && errors.phone && (
         <p className="text-red-600 dark:text-red-400 text-sm">
           {errors.phone}
         </p>
       )}
 
-      <input
-        type="text"
-        placeholder="Country"
+      <CountrySelect
         value={shippingInfo.country}
-        onChange={(e) => handleChange("country", e.target.value)}
-        className={inputClasses}
+        onChange={(country) =>
+          dispatch(
+            setShippingInfo({
+              ...shippingInfo,
+              country,
+            })
+          )
+        }
       />
+
       {submitAttempted && errors.country && (
         <p className="text-red-600 dark:text-red-400 text-sm">
           {errors.country}
