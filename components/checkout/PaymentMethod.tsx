@@ -1,5 +1,7 @@
 "use client";
 
+import MastercardIcon from "components/icon/MastercardIcon";
+import VisaIcon from "components/icon/VisaIcon";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "store-redux";
 import {
@@ -48,19 +50,26 @@ export default function PaymentMethod() {
       {/* CARD OPTION */}
       <div
         className={`border border-gray-300 dark:border-gray-700 p-4 rounded space-y-3 transition ${paymentMethod === "card"
-            ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-500"
-            : ""
+          ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-500"
+          : ""
           }`}
       >
-        <label className="flex items-center gap-2">
-          <input
-            type="radio"
-            checked={paymentMethod === "card"}
-            onChange={() => dispatch(setPaymentMethod("card"))}
-            className="accent-blue-600 dark:accent-blue-400"
-          />
-          Credit / Debit Card
-        </label>
+        <div className="flex items-center justify-between">
+
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              checked={paymentMethod === "card"}
+              onChange={() => dispatch(setPaymentMethod("card"))}
+              className="accent-blue-600 dark:accent-blue-400"
+            />
+            Credit / Debit Card
+          </label>
+          <div className="flex items-center gap-2">
+            <VisaIcon />
+            <MastercardIcon />
+          </div>
+        </div>
 
         {paymentMethod === "card" && (
           <div className="space-y-3">
@@ -120,8 +129,8 @@ export default function PaymentMethod() {
       {/* BANK OPTION */}
       <div
         className={`border border-gray-300 dark:border-gray-700 p-4 rounded space-y-3 transition ${paymentMethod === "bank"
-            ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-500"
-            : ""
+          ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-500"
+          : ""
           }`}
       >
         <label className="flex items-center gap-2">
